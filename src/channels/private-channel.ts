@@ -31,7 +31,7 @@ export class PrivateChannel {
     authenticate(socket: any, data: any): Promise<any> {
         let options = {
             url: this.authHost(socket) + this.options.authEndpoint,
-            form: { channel_name: data.channel },
+            form: { channel_name: data.channel, id: socket.id },
             headers: (data.auth && data.auth.headers) ? data.auth.headers : {},
             rejectUnauthorized: false
         };
