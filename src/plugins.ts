@@ -60,10 +60,10 @@ export class Plugins {
         let plugin = null;
 
         // If it is an absolute path
-        if(path.substring(0, 1) === '/') {
-            plugin = require(path);
-        } else {
+        if (path.substring(0, 1) === '@') {
             plugin = require('./../plugins/' + path);
+        } else {
+            plugin = require(path);
         }
 
         plugin.register(this.events, this.options);
