@@ -30,6 +30,16 @@ export class HttpApi {
         );
 
         this.express.get(
+            '/apps/:appId/users',
+            (req, res) => this.getUsers(req, res)
+        );
+
+        this.express.get(
+            '/apps/:appId/users/:userId/purge',
+            (req, res) => this.getPurge(req, res)
+        );
+
+        this.express.get(
             '/apps/:appId/channels',
             (req, res) => this.getChannels(req, res)
         );
@@ -82,6 +92,33 @@ export class HttpApi {
             memory_usage: process.memoryUsage(),
         });
     }
+
+    /**
+     * Purge a user from the server.
+     *
+     * @param {any} req
+     * @param {any} res
+     */
+    getPurge(req: any, res: any): void {
+        let user = this.io.sockets.connected[req.params.userId];
+        user.disconnect();
+        res.json({
+            user: user,
+        });
+    };
+
+    /**
+     * Get users from the server.
+     *
+     * @param {any} req
+     * @param {any} res
+     */
+    getUsers(req: any, res: any): void {
+        let users = this.io.sockets.connected;
+        res.json({
+            users: Object.keys(users),
+        });
+    };
 
     /**
      * Get a list of the open channels on the server.
